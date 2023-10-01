@@ -5,6 +5,7 @@ import org.leviatanplatform.sudoku.engine.util.SudokuUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class BoardValidator {
@@ -80,7 +81,9 @@ public class BoardValidator {
         }
     }
 
-    private static void validateListOfItems(Board board, String name, List<Integer> listOfItems, boolean finished) {
+    private static void validateListOfItems(Board board, String name, List<Integer> listOfItemsWithNulls, boolean finished) {
+
+        List<Integer> listOfItems = listOfItemsWithNulls.stream().filter(Objects::nonNull).toList();
 
         int boardSizeSquare = board.getBoardSizeSquare();
         Set<Integer> setOfUnseenItems = SudokuUtils.getUnseenItems(boardSizeSquare, listOfItems);
