@@ -12,8 +12,7 @@ public class BoardValidator {
     public static boolean isFinishedBoardOk(Board board) {
 
         try {
-            board.validateSize();
-            validateBoardItemsRange(board);
+            board.validate();
             validateBoardItemsColumn(board);
             validateBoardItemsRow(board);
             validateBoardItemsSquare(board);
@@ -96,17 +95,6 @@ public class BoardValidator {
 
     }
 
-    private static void validateBoardItemsRange(Board board) {
 
-        int maxNumber = board.getMaxNumber();
-
-        for (int c = 0; c < maxNumber; c++) {
-            for (int r = 0; r < maxNumber; r++) {
-                if (board.get(c, r) <= 0 || board.get(c, r) > maxNumber) {
-                    throw new BoardValidationException("Error in board item [" + c + ", " + r + "] = " + board.get(c, r));
-                }
-            }
-        }
-    }
 
 }

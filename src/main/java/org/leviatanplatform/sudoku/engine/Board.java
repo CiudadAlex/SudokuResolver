@@ -2,6 +2,22 @@ package org.leviatanplatform.sudoku.engine;
 
 import org.leviatanplatform.sudoku.engine.validation.BoardValidationException;
 
+/**
+ * [0][8]   ...    [8][8]
+ *
+ *  ...             ...
+ *
+ * [0][0]   ...    [8][0]
+ *
+ * -----------------------------------
+ *
+ * [0][maxNumber]   ...    [maxNumber][maxNumber]
+ *
+ *  ...             ...
+ *
+ * [0][0]           ...    [maxNumber][0]
+ *
+ */
 public class Board {
 
     private final int boardSizeSquare;
@@ -30,7 +46,12 @@ public class Board {
         return boardSizeSquare * boardSizeSquare;
     }
 
-    public void validateSize() {
+    public void validate() {
+        validateSize();
+        validateItemsRange();
+    }
+
+    private void validateSize() {
 
         int maxNumber = getMaxNumber();
         int dim1 = matrix.length;
@@ -49,6 +70,20 @@ public class Board {
         }
     }
 
+    private void validateItemsRange() {
+
+        int maxNumber = getMaxNumber();
+
+        for (int c = 0; c < maxNumber; c++) {
+            for (int r = 0; r < maxNumber; r++) {
+                Integer value = get(c, r);
+                if (value != null && (value <= 0 || value > maxNumber)) {
+                    throw new BoardValidationException("Error in board item [" + c + ", " + r + "] = " + get(c, r));
+                }
+            }
+        }
+    }
+
     public Board copy() {
 
         this.validateSize();
@@ -63,5 +98,44 @@ public class Board {
         }
 
         return newBoard;
+    }
+
+    public void print() {
+
+        StringBuilder sb = new StringBuilder();
+        int maxNumber = getMaxNumber();
+
+        for (int r = maxNumber - 1; r >= 0; r--) {
+
+            appendRepeating(sb, "_", maxNumber * 4 + 1);
+
+            for (int c = 0; c < maxNumber; c++) {
+                Integer value = get(c, r);
+                String printableValue = transformItemForPrint(value);
+                sb.append("| ").append(printableValue).append(" ");
+            }
+
+            sb.append("|\n");
+        }
+
+        appendRepeating(sb, "_", maxNumber * 4 + 1);
+    }
+
+    private void appendRepeating(StringBuilder sb, String txt, int numberRepeats) {
+
+        for (int i = 0; i < numberRepeats; i++) {
+            sb.append(txt);
+        }
+    }
+
+    private String transformItemForPrint(Integer value) {
+
+        String items = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        if (value == null) {
+            return " ";
+        }
+
+        return items.length() > value ? "" + items.charAt(value) : "" + value;
     }
 }
