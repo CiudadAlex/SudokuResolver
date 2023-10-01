@@ -9,13 +9,13 @@ import java.util.Set;
 
 public class BoardValidator {
 
-    public static boolean isFinishedBoardOk(Board board) {
+    public static boolean isBoardOk(Board board, boolean finished) {
 
         try {
             board.validate();
-            validateBoardItemsColumn(board);
-            validateBoardItemsRow(board);
-            validateBoardItemsSquare(board);
+            validateBoardItemsColumn(board, finished);
+            validateBoardItemsRow(board, finished);
+            validateBoardItemsSquare(board, finished);
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -25,7 +25,7 @@ public class BoardValidator {
         return true;
     }
 
-    private static void validateBoardItemsSquare(Board board) {
+    private static void validateBoardItemsSquare(Board board, boolean finished) {
 
         int boardSizeSquare = board.getBoardSizeSquare();
 
@@ -43,12 +43,12 @@ public class BoardValidator {
                     }
                 }
 
-                validateListOfItems(board, "square [" + bc + ", " + br + "]", listOfItems);
+                validateListOfItems(board, "square [" + bc + ", " + br + "]", listOfItems, finished);
             }
         }
     }
 
-    private static void validateBoardItemsRow(Board board) {
+    private static void validateBoardItemsRow(Board board, boolean finished) {
 
         int maxNumber = board.getMaxNumber();
 
@@ -60,11 +60,11 @@ public class BoardValidator {
                 listOfItems.add(board.get(c,r));
             }
 
-            validateListOfItems(board, "row [x, " + r + "]", listOfItems);
+            validateListOfItems(board, "row [x, " + r + "]", listOfItems, finished);
         }
     }
 
-    private static void validateBoardItemsColumn(Board board) {
+    private static void validateBoardItemsColumn(Board board, boolean finished) {
 
         int maxNumber = board.getMaxNumber();
 
@@ -76,20 +76,25 @@ public class BoardValidator {
                 listOfItems.add(board.get(c, r));
             }
 
-            validateListOfItems(board, "colum [" + c + ", x]", listOfItems);
+            validateListOfItems(board, "colum [" + c + ", x]", listOfItems, finished);
         }
     }
 
-    private static void validateListOfItems(Board board, String name, List<Integer> listOfItems) {
+    private static void validateListOfItems(Board board, String name, List<Integer> listOfItems, boolean finished) {
 
         int boardSizeSquare = board.getBoardSizeSquare();
         Set<Integer> setOfUnseenItems = SudokuUtils.getUnseenItems(boardSizeSquare, listOfItems);
 
         for (Integer item : listOfItems) {
-            setOfUnseenItems.remove(item);
+            boolean contained = setOfUnseenItems.remove(item);
+
+            if (!contained) {
+                throw new BoardValidationException("Error in board " + name + " has duplicated item: " + item
+                        + " -> " + listOfItems);
+            }
         }
 
-        if (!setOfUnseenItems.isEmpty()) {
+        if (finished && !setOfUnseenItems.isEmpty()) {
             throw new BoardValidationException("Error in board " + name + " does not have values: " + setOfUnseenItems);
         }
 
