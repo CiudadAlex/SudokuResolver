@@ -139,11 +139,9 @@ public class Board {
     public void print() {
 
         StringBuilder sb = new StringBuilder();
-        int maxNumber = getMaxNumber();
+        int maxNumber = getMaxNumber();;
 
         for (int r = maxNumber - 1; r >= 0; r--) {
-
-            appendRepeating(sb, "_", maxNumber * 4 + 1);
 
             for (int c = 0; c < maxNumber; c++) {
                 Integer value = get(c, r);
@@ -152,9 +150,13 @@ public class Board {
             }
 
             sb.append("|\n");
+
+            if (r % boardSizeSquare == 0) {
+                appendRepeating(sb, "_", maxNumber * 4 + 1);
+                sb.append("\n");
+            }
         }
 
-        appendRepeating(sb, "_", maxNumber * 4 + 1);
         System.out.println(sb);
     }
 

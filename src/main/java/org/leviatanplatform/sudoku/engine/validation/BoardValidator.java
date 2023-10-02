@@ -78,11 +78,11 @@ public class BoardValidator {
         List<Integer> listOfItems = listOfItemsWithNulls.stream().filter(Objects::nonNull).toList();
 
         int boardSizeSquare = board.getBoardSizeSquare();
-        Set<Integer> setOfUnseenItems = SudokuUtils.getUnseenItems(boardSizeSquare, listOfItems);
+        Set<Integer> setOfAllItems = SudokuUtils.createSetOfAllItems(boardSizeSquare);
 
         for (Integer item : listOfItems) {
 
-            boolean contained = setOfUnseenItems.remove(item);
+            boolean contained = setOfAllItems.remove(item);
 
             if (!contained) {
                 throw new BoardValidationException("Error in board " + name + " has duplicated item: " + item
