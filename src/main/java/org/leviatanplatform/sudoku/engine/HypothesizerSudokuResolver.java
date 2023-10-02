@@ -10,6 +10,7 @@ public class HypothesizerSudokuResolver {
 
         if (!modBoard.isFinished()) {
             Position positionWithLessCandidates = getPositionWithLessCandidates(board);
+            // FIXME select candidate and set it in copied board and iterate until finished or exception. If exception try an other candidate
         }
 
         // FIXME finish
