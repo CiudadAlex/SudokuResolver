@@ -2,6 +2,8 @@ package org.leviatanplatform.sudoku.engine;
 
 import org.leviatanplatform.sudoku.engine.validation.BoardValidationException;
 
+import java.util.Objects;
+
 /**
  * [0][8]   ...    [8][8]
  *
@@ -98,6 +100,25 @@ public class Board {
         }
 
         return newBoard;
+    }
+
+    public boolean isEqual(Board board) {
+
+        if (boardSizeSquare != board.boardSizeSquare) {
+            return false;
+        }
+
+        int maxNumber = getMaxNumber();
+
+        for (int r = 0; r < maxNumber; r++) {
+            for (int c = 0; c < maxNumber; c++) {
+                if (!Objects.equals(get(c, r), board.get(c, r))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public void print() {

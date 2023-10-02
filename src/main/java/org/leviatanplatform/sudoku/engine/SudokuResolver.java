@@ -12,16 +12,31 @@ public class SudokuResolver {
 
   public static Board solve(Board board) {
     board.validate();
-    Board newBoard = board.copy();
+    Board modBoard = board.copy();
 
+    fillBoardWithOneItemInformation(modBoard);
 
-    //Set<Integer> setOfUnseenItems = SudokuUtils.getUnseenItems(listOfItems);
-    return null;
+    if (board.isEqual(modBoard)) {
+      System.out.println("NO CHANGES MADE");
+    } else {
+      System.out.println("CHANGES MADE");
+    }
+
+    return modBoard;
   }
 
   private static void fillBoardWithOneItemInformation(Board board) {
 
-    // FIXME acabar
+    int maxNumber = board.getMaxNumber();
+
+    for (int r = 0; r < maxNumber; r++) {
+      for (int c = 0; c < maxNumber; c++) {
+        Set<Integer> candidates = getPossibleCandidates(board, c, r);
+        if (candidates.size() == 1) {
+          board.set(c, r, candidates.iterator().next());
+        }
+      }
+    }
 
   }
 
