@@ -41,16 +41,41 @@ public class SudokuResolver {
   }
 
   // FIXME use
-  private static void fillBoardWithMultipleItemInformationRows(Board board) {
+  private static void fillBoardWithMultipleItemInformation(Board board) {
 
     int maxNumber = board.getMaxNumber();
 
     for (int r = 0; r < maxNumber; r++) {
-      fillBoardWithMultipleItemInformationRows(board, r);
+      fillBoardWithMultipleItemInformationRow(board, r);
     }
+
+    for (int c = 0; c < maxNumber; c++) {
+      fillBoardWithMultipleItemInformationColum(board, c);
+    }
+
+    // FIXME square
   }
 
-  private static void fillBoardWithMultipleItemInformationRows(Board board, int row) {
+  private static void fillBoardWithMultipleItemInformationColum(Board board, int column) {
+
+    int maxNumber = board.getMaxNumber();
+    List<Position> listPosition = new ArrayList<>();
+
+    for (int r = 0; r < maxNumber; r++) {
+
+      Integer value = board.get(column, r);
+
+      if (value == null) {
+        Set<Integer> candidates = getPossibleCandidates(board, column, r);
+        Position position = new Position(column, r, candidates);
+        listPosition.add(position);
+      }
+    }
+
+    fillBoardWithMultipleItemInformation(board, listPosition);
+  }
+
+  private static void fillBoardWithMultipleItemInformationRow(Board board, int row) {
 
     int maxNumber = board.getMaxNumber();
     List<Position> listPosition = new ArrayList<>();
@@ -71,7 +96,36 @@ public class SudokuResolver {
 
   private static void fillBoardWithMultipleItemInformation(Board board, List<Position> listPosition) {
 
-    // FIXME finish
+    int boardSizeSquare = board.getBoardSizeSquare();
+    Set<Integer> setAllPossibleItems = SudokuUtils.createSetOfAllItems(boardSizeSquare);
+
+    for (Integer item : setAllPossibleItems) {
+
+      Position positionWithItem = findPositionWithUniqueItemAsCandidate(board, listPosition, item);
+
+      if (positionWithItem != null) {
+        board.set(positionWithItem.getColumn(), positionWithItem.getRow(), item);
+      }
+    }
+  }
+
+  private static Position findPositionWithUniqueItemAsCandidate(Board board, List<Position> listPosition, Integer item) {
+
+    Position positionWithItem = null;
+    int count = 0;
+
+    for (Position position : listPosition) {
+      if (position.getCandidates().contains(item)) {
+        positionWithItem = position;
+        count++;
+      }
+    }
+
+    if (count == 1) {
+      return positionWithItem;
+    } else {
+      return null;
+    }
   }
 
   private static void fillBoardWithOneItemInformation(Board board) {
