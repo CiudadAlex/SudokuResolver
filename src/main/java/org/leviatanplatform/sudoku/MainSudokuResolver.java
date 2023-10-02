@@ -1,7 +1,7 @@
 package org.leviatanplatform.sudoku;
 
 import org.leviatanplatform.sudoku.engine.Board;
-import org.leviatanplatform.sudoku.engine.SudokuResolver;
+import org.leviatanplatform.sudoku.engine.HypothesizerSudokuResolver;
 import org.leviatanplatform.sudoku.examples.SudokuSampleGenerator;
 
 public class MainSudokuResolver {
@@ -13,7 +13,7 @@ public class MainSudokuResolver {
 
         System.out.println("###################################################");
 
-        Board solvedBoard = SudokuResolver.solve(board);
+        Board solvedBoard = HypothesizerSudokuResolver.solve(board);
         solvedBoard.print();
     }
 }
