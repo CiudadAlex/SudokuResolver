@@ -44,6 +44,7 @@ public class SudokuResolver {
   private static void fillBoardWithMultipleItemInformation(Board board) {
 
     int maxNumber = board.getMaxNumber();
+    int boardSizeSquare = board.getBoardSizeSquare();
 
     for (int r = 0; r < maxNumber; r++) {
       fillBoardWithMultipleItemInformationRow(board, r);
@@ -53,7 +54,28 @@ public class SudokuResolver {
       fillBoardWithMultipleItemInformationColum(board, c);
     }
 
-    // FIXME square
+    for (int br = 0; br < boardSizeSquare; br++) {
+      for (int bc = 0; bc < boardSizeSquare; bc++) {
+        fillBoardWithMultipleItemInformationSquare(board, bc, br);
+      }
+    }
+  }
+
+  private static void fillBoardWithMultipleItemInformationSquare(Board board, int bc, int br) {
+
+    int boardSizeSquare = board.getBoardSizeSquare();
+    List<Position> listPosition = new ArrayList<>();
+
+    for (int r = 0; r < boardSizeSquare; r++) {
+      for (int c = 0; c < boardSizeSquare; c++) {
+        int rowInSquare = boardSizeSquare * br + r;
+        int columnInSquare = boardSizeSquare * bc + c;
+
+        addToListPositionIfNull(board, columnInSquare, rowInSquare, listPosition);
+      }
+    }
+
+    fillBoardWithMultipleItemInformation(board, listPosition);
   }
 
   private static void fillBoardWithMultipleItemInformationColum(Board board, int column) {
@@ -62,14 +84,7 @@ public class SudokuResolver {
     List<Position> listPosition = new ArrayList<>();
 
     for (int r = 0; r < maxNumber; r++) {
-
-      Integer value = board.get(column, r);
-
-      if (value == null) {
-        Set<Integer> candidates = getPossibleCandidates(board, column, r);
-        Position position = new Position(column, r, candidates);
-        listPosition.add(position);
-      }
+      addToListPositionIfNull(board, column, r, listPosition);
     }
 
     fillBoardWithMultipleItemInformation(board, listPosition);
@@ -81,17 +96,21 @@ public class SudokuResolver {
     List<Position> listPosition = new ArrayList<>();
 
     for (int c = 0; c < maxNumber; c++) {
-
-      Integer value = board.get(c, row);
-
-      if (value == null) {
-        Set<Integer> candidates = getPossibleCandidates(board, c, row);
-        Position position = new Position(c, row, candidates);
-        listPosition.add(position);
-      }
+      addToListPositionIfNull(board, c, row, listPosition);
     }
 
     fillBoardWithMultipleItemInformation(board, listPosition);
+  }
+
+  private static void addToListPositionIfNull(Board board, int column, int row, List<Position> listPosition) {
+
+    Integer value = board.get(column, row);
+
+    if (value == null) {
+      Set<Integer> candidates = getPossibleCandidates(board, column, row);
+      Position position = new Position(column, row, candidates);
+      listPosition.add(position);
+    }
   }
 
   private static void fillBoardWithMultipleItemInformation(Board board, List<Position> listPosition) {
