@@ -58,6 +58,24 @@ public class SudokuSampleGenerator {
             {    5, null,    3,    2, null, null, null,    1, null },
     };
 
+    public static Board getExampleBoardSize3Ultra1() {
+        return getExampleBoard(3, SIZE_3_ULTRA_1);
+    }
+
+    private static final Integer[][] SIZE_3_ULTRA_1 = new Integer[][] {
+            { null,    1, null, null, null,    8,    4, null,    7 },
+            {    9,    5, null, null, null, null, null, null, null },
+            { null, null,    8, null,    1, null, null, null, null },
+
+            { null,    8,    2, null, null, null, null, null, null },
+            {    7, null, null,    4, null, null, null, null,    8 },
+            { null, null, null, null, null, null,    6,    2, null },
+
+            { null, null, null, null,    5, null,    7, null, null },
+            { null, null, null, null, null, null, null,    8,    2 },
+            {    5, null,    3,    2, null, null, null,    1, null },
+    };
+
     private static Board getExampleBoard(int boardSizeSquare, Integer[][] invertedMatrix) {
 
         int maxNumber = boardSizeSquare * boardSizeSquare;

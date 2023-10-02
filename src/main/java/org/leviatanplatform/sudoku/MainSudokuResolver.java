@@ -8,7 +8,7 @@ public class MainSudokuResolver {
 
     public static void main(String[] args) {
 
-        Board board = SudokuSampleGenerator.getExampleBoardSize3Difficult1();
+        Board board = SudokuSampleGenerator.getExampleBoardSize3Ultra1();
         board.print();
 
         System.out.println("###################################################");
