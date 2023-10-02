@@ -17,6 +17,7 @@ public class SudokuResolver {
     Board modBoard = board.copy();
 
     iterateUntilNoMoreChangesAreMade(modBoard, SudokuResolver::fillBoardWithOneItemInformation);
+    iterateUntilNoMoreChangesAreMade(modBoard, SudokuResolver::fillBoardWithMultipleItemInformation);
 
     BoardValidator.validateBoard(modBoard);
 
@@ -40,7 +41,6 @@ public class SudokuResolver {
     }
   }
 
-  // FIXME use
   private static void fillBoardWithMultipleItemInformation(Board board) {
 
     int maxNumber = board.getMaxNumber();
