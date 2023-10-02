@@ -140,6 +140,7 @@ public class Board {
         }
 
         appendRepeating(sb, "_", maxNumber * 4 + 1);
+        System.out.println(sb);
     }
 
     private void appendRepeating(StringBuilder sb, String txt, int numberRepeats) {

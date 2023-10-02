@@ -63,30 +63,20 @@ public class SudokuResolver {
   private static Set<Integer> getPossibleCandidatesSquare(Board board, int column, int row) {
 
     int boardSizeSquare = board.getBoardSizeSquare();
+    int br = row / boardSizeSquare;
+    int bc = column / boardSizeSquare;
 
-    // FIXME finish
+    List<Integer> listOfItems = new ArrayList<>();
 
-    /*
-
-    for (int br = 0; br < boardSizeSquare; br++) {
-
-      for (int bc = 0; bc < boardSizeSquare; bc++) {
-
-        List<Integer> listOfItems = new ArrayList<>();
-
-        for (int r = 0; r < boardSizeSquare; r++) {
-          for (int c = 0; c < boardSizeSquare; c++) {
-            int row = boardSizeSquare * br + r;
-            int column = boardSizeSquare * bc + c;
-            listOfItems.add(board.get(column, row));
-          }
-        }
+    for (int r = 0; r < boardSizeSquare; r++) {
+      for (int c = 0; c < boardSizeSquare; c++) {
+        int rowInSquare = boardSizeSquare * br + r;
+        int columnInSquare = boardSizeSquare * bc + c;
+        listOfItems.add(board.get(columnInSquare, rowInSquare));
       }
     }
 
-    */
-
-    return null;
+    return SudokuUtils.getUnseenItems(boardSizeSquare, listOfItems);
   }
 
   private static Set<Integer> getPossibleCandidatesRow(Board board, int column, int row) {
