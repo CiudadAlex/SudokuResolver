@@ -1,28 +1,43 @@
 package org.leviatanplatform.sudoku.engine;
 
 import org.leviatanplatform.sudoku.engine.util.SudokuUtils;
+import org.leviatanplatform.sudoku.engine.validation.BoardValidator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.function.Consumer;
 
 public class SudokuResolver {
 
   public static Board solve(Board board) {
-    board.validate();
+
+    BoardValidator.validateBoard(board);
     Board modBoard = board.copy();
 
-    fillBoardWithOneItemInformation(modBoard);
+    iterateUntilNoMoreChangesAreMade(modBoard, SudokuResolver::fillBoardWithOneItemInformation);
 
-    if (board.isEqual(modBoard)) {
-      System.out.println("NO CHANGES MADE");
-    } else {
-      System.out.println("CHANGES MADE");
-    }
+    BoardValidator.validateBoard(modBoard);
 
     return modBoard;
+  }
+
+  private static void iterateUntilNoMoreChangesAreMade(Board board, Consumer<Board> fillFunction) {
+
+    BoardValidator.validateBoard(board);
+
+    while (true) {
+
+      Board boardBeforeFill = board.copy();
+      fillFunction.accept(board);
+
+      BoardValidator.validateBoard(board);
+
+      if (boardBeforeFill.isEqual(board)) {
+        break;
+      }
+    }
   }
 
   private static void fillBoardWithOneItemInformation(Board board) {
@@ -31,13 +46,17 @@ public class SudokuResolver {
 
     for (int r = 0; r < maxNumber; r++) {
       for (int c = 0; c < maxNumber; c++) {
-        Set<Integer> candidates = getPossibleCandidates(board, c, r);
-        if (candidates.size() == 1) {
-          board.set(c, r, candidates.iterator().next());
+
+        Integer value = board.get(c, r);
+
+        if (value == null) {
+          Set<Integer> candidates = getPossibleCandidates(board, c, r);
+          if (candidates.size() == 1) {
+            board.set(c, r, candidates.iterator().next());
+          }
         }
       }
     }
-
   }
 
   private static Set<Integer> getPossibleCandidates(Board board, int column, int row) {

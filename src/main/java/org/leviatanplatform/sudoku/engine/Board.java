@@ -102,6 +102,21 @@ public class Board {
         return newBoard;
     }
 
+    public boolean isFinished() {
+
+        int maxNumber = getMaxNumber();
+
+        for (int r = 0; r < maxNumber; r++) {
+            for (int c = 0; c < maxNumber; c++) {
+                if (get(c, r) == null) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public boolean isEqual(Board board) {
 
         if (boardSizeSquare != board.boardSizeSquare) {
