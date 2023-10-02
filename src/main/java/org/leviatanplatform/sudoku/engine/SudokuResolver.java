@@ -166,7 +166,7 @@ public class SudokuResolver {
     }
   }
 
-  private static Set<Integer> getPossibleCandidates(Board board, int column, int row) {
+  public static Set<Integer> getPossibleCandidates(Board board, int column, int row) {
 
     Set<Integer> candidatesRow = getPossibleCandidatesRow(board, column, row);
     Set<Integer> candidatesColumn = getPossibleCandidatesColumn(board, column, row);
