@@ -40,6 +40,40 @@ public class SudokuResolver {
     }
   }
 
+  // FIXME use
+  private static void fillBoardWithMultipleItemInformationRows(Board board) {
+
+    int maxNumber = board.getMaxNumber();
+
+    for (int r = 0; r < maxNumber; r++) {
+      fillBoardWithMultipleItemInformationRows(board, r);
+    }
+  }
+
+  private static void fillBoardWithMultipleItemInformationRows(Board board, int row) {
+
+    int maxNumber = board.getMaxNumber();
+    List<Position> listPosition = new ArrayList<>();
+
+    for (int c = 0; c < maxNumber; c++) {
+
+      Integer value = board.get(c, row);
+
+      if (value == null) {
+        Set<Integer> candidates = getPossibleCandidates(board, c, row);
+        Position position = new Position(c, row, candidates);
+        listPosition.add(position);
+      }
+    }
+
+    fillBoardWithMultipleItemInformation(board, listPosition);
+  }
+
+  private static void fillBoardWithMultipleItemInformation(Board board, List<Position> listPosition) {
+
+    // FIXME finish
+  }
+
   private static void fillBoardWithOneItemInformation(Board board) {
 
     int maxNumber = board.getMaxNumber();
