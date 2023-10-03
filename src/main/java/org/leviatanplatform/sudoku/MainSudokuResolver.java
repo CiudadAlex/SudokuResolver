@@ -13,6 +13,7 @@ public class MainSudokuResolver {
         solve(SudokuSampleGenerator.getExampleBoardSize3Difficult1());
         solve(SudokuSampleGenerator.getExampleBoardSize3Ultra1());
 
+        solve(SudokuSampleGenerator.getExampleBoardSize4Easy1());
     }
 
     private static void solve(Board board) {
