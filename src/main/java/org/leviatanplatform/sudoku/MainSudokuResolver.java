@@ -8,12 +8,22 @@ public class MainSudokuResolver {
 
     public static void main(String[] args) {
 
-        Board board = SudokuSampleGenerator.getExampleBoardSize3Ultra1();
+        solve(SudokuSampleGenerator.getExampleBoardSize3Easy1());
+        solve(SudokuSampleGenerator.getExampleBoardSize3Medium1());
+        solve(SudokuSampleGenerator.getExampleBoardSize3Difficult1());
+        solve(SudokuSampleGenerator.getExampleBoardSize3Ultra1());
+
+    }
+
+    private static void solve(Board board) {
+
         board.print();
 
         System.out.println("###################################################");
 
         Board solvedBoard = HypothesizerSudokuResolver.solve(board);
         solvedBoard.print();
+
+        System.out.println("###################################################");
     }
 }
